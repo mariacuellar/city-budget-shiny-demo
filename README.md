@@ -1,44 +1,33 @@
 # City budget explorer
 
-A minimal R Shiny demonstration for sharing an interactive app with a colleague or city official. **All data are fictional.**
-
-Move a budget slider to update department allocations, see the chart and table, and download the scenario as a CSV. The five department shares stay fixed and sum to 100%.
+A simple R Shiny app with a budget slider, chart, table, and CSV download. All data are fictional.
 
 ## Run locally
 
-Open this folder in RStudio. Run in the R console:
+Open app.R in RStudio and click Run App, or run `shiny::runApp()` with this folder as the working directory. Install Shiny first if needed: `install.packages("shiny")`.
+
+## Publish on Posit Connect Cloud
+
+GitHub holds the code; Connect Cloud runs the app and provides the link to share.
+
+1. Commit and push app.R, manifest.json, README.md, and .gitignore to your city-budget-shiny-demo GitHub repository.
+2. Sign in at https://connect.posit.cloud/ and choose Publish, then Shiny.
+3. Select the city-budget-shiny-demo repository and the branch containing these files.
+4. Select app.R as the primary file and publish.
+5. Open the resulting app URL and share it with your colleague.
+
+For a public demo, use public visibility. Hosting and repository access depend on your Connect Cloud plan.
+
+## Update the app
+
+After changing code or dependencies, regenerate the manifest from this folder:
 
 ```r
-install.packages("shiny") # Only needed once
-shiny::runApp()
+rsconnect::writeManifest(appDir = ".", appFiles = "app.R", appPrimaryDoc = "app.R")
 ```
 
-Or open `app.R` in RStudio and click **Run App**.
+Commit and push the changes, then republish in Connect Cloud. The manifest records the R version and required packages; it is generated from your installed R environment.
 
-## Put the code on GitHub
+Keep account tokens and secrets out of GitHub. Local rsconnect deployment records are ignored.
 
-Create a repository named `city-budget-shiny-demo` on GitHub. Upload `app.R`, `README.md`, and `.gitignore` from this folder. This folder contains only the demo; do not upload its parent directory.
-
-GitHub stores the source code. GitHub Pages cannot run this R Shiny app because it needs an R server.
-
-## Publish the working app on shinyapps.io
-
-1. Sign in to [shinyapps.io](https://www.shinyapps.io/).
-2. In RStudio, install the deployment package with `install.packages("rsconnect")`.
-3. Follow the account's setup instructions to run its `rsconnect::setAccountInfo(...)` command in your R console. Keep tokens and secrets out of source files and GitHub.
-4. With this folder as the working directory, run:
-
-```r
-rsconnect::deployApp(
-  appDir = ".",
-  appFiles = "app.R",
-  appName = "city-budget-shiny-demo",
-  appTitle = "City budget explorer"
-)
-```
-
-5. Open the URL returned by deployment and send that working-app link to your colleague. Viewers do not need R or RStudio.
-
-After changing the app, update the GitHub code and run `deployApp()` again to update the hosted app. A GitHub commit alone does not update this shinyapps.io deployment.
-
-See [Posit's deployment guide](https://docs.posit.co/shinyapps.io/guide/getting_started/) for account setup and publishing details. Hosting usage is subject to the account's plan limits.
+Official guide: https://docs.posit.co/connect-cloud/how-to/r/shiny-r.html
